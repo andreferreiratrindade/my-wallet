@@ -16,6 +16,7 @@ namespace Framework.Core.OpenTelemetry
     public static class OpenTelemetryConfig
     {
 
+// teste commit
         private static void CreateLog(string serviceName)
         {
             Log.Logger = new LoggerConfiguration()
