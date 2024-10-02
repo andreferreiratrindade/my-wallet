@@ -16,7 +16,7 @@ namespace Framework.Core.DomainObjects
         /// <summary>
         /// The identifier of the aggregate which has generated the event
         /// </summary>
-        Guid AggregateId { get; }
+        //Guid AggregateId { get; }
 
         /// <summary>
         /// The version of the aggregate when the event has been generated

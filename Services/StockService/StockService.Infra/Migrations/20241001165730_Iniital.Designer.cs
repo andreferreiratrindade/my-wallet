@@ -12,7 +12,7 @@ using StockService.Infra;
 namespace StockService.Infra.Migrations
 {
     [DbContext(typeof(StockContext))]
-    [Migration("20240927102325_Iniital")]
+    [Migration("20241001165730_Iniital")]
     partial class Iniital
     {
         /// <inheritdoc />
@@ -197,12 +197,52 @@ namespace StockService.Infra.Migrations
                     b.ToTable("OutboxState");
                 });
 
+            modelBuilder.Entity("StockService.Domain.Models.Entities.Stock", b =>
+                {
+                    b.Property<Guid>("StockId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("StockId");
+
+                    b.ToTable("Stocks", (string)null);
+                });
+
+            modelBuilder.Entity("StockService.Domain.Models.Entities.StockResultTransaction", b =>
+                {
+                    b.Property<Guid>("StockResultTransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StockId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("StockResultTransactionId");
+
+                    b.HasIndex("StockId");
+
+                    b.ToTable("StockResultTransaction", (string)null);
+                });
+
             modelBuilder.Entity("StockService.Domain.Models.Entities.Transaction", b =>
                 {
-                    b.Property<Guid>("AggregateId")
+                    b.Property<Guid>("TransactionId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");
@@ -210,9 +250,8 @@ namespace StockService.Infra.Migrations
                     b.Property<DateTime>("InvestmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Symbol")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
+                    b.Property<Guid>("StockId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte>("TypeOperationInvestment")
                         .HasColumnType("tinyint");
@@ -220,9 +259,31 @@ namespace StockService.Infra.Migrations
                     b.Property<decimal>("Value")
                         .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("AggregateId");
+                    b.HasKey("TransactionId");
+
+                    b.HasIndex("StockId");
 
                     b.ToTable("Transactions", (string)null);
+                });
+
+            modelBuilder.Entity("StockService.Domain.Models.Entities.StockResultTransaction", b =>
+                {
+                    b.HasOne("StockService.Domain.Models.Entities.Stock", "Stock")
+                        .WithMany()
+                        .HasForeignKey("StockId")
+                        .IsRequired();
+
+                    b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("StockService.Domain.Models.Entities.Transaction", b =>
+                {
+                    b.HasOne("StockService.Domain.Models.Entities.Stock", "Stock")
+                        .WithMany()
+                        .HasForeignKey("StockId")
+                        .IsRequired();
+
+                    b.Navigation("Stock");
                 });
 #pragma warning restore 612, 618
         }

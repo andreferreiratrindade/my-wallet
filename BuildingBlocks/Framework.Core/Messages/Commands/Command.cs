@@ -21,7 +21,7 @@ namespace Framework.Core.Messages
         [JsonIgnore]
         private RollBackEvent _rollBackEvent {get;set;}
         [JsonIgnore]
-        public CorrelationIdGuid CorrelationId {get;}
+        public CorrelationId CorrelationId {get;}
 
         [JsonIgnore]
         public string MessageType {get;private set;}
@@ -37,7 +37,7 @@ namespace Framework.Core.Messages
         protected void AddRollBackEvent(RollBackEvent rollBackEvent) => this._rollBackEvent = rollBackEvent;
 
 
-       public Command(CorrelationIdGuid correlationId)
+       public Command(CorrelationId correlationId)
        {
         this.CorrelationId = correlationId;
            MessageType =  GetType().Name;

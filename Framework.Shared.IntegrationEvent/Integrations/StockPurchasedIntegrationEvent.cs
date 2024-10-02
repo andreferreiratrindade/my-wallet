@@ -26,7 +26,7 @@ namespace Framework.Shared.IntegrationEvent.Integration
                                     string symbol,
                                     DateTime investmentDate,
                                     TypeOperationInvestment typeOperationInvestment,
-                                    CorrelationIdGuid correlationId):base(correlationId)
+                                    CorrelationId correlationId):base(correlationId)
         {
             Amount = amount;
             Value = value;

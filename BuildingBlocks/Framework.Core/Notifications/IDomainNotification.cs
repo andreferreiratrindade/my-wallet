@@ -5,8 +5,8 @@ namespace Framework.Core.Notifications
 {
     public interface IDomainNotification
     {
-        void SetCorrelationId(CorrelationIdGuid correlationId);
-        CorrelationIdGuid GetCorrelationId();
+        void SetCorrelationId(CorrelationId correlationId);
+        CorrelationId GetCorrelationId();
         IReadOnlyCollection<NotificationMessage> Notifications { get; }
         bool HasNotifications { get; }
 

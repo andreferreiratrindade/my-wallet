@@ -1,6 +1,8 @@
 
 using Framework.Core.DomainObjects;
 using Framework.Shared.IntegrationEvent.Enums;
+using StockService.Domain.Models.Entities;
+using StockService.Domain.Models.Entities.Ids;
 
 namespace StockService.Domain.DomainEvents
 {
@@ -8,22 +10,22 @@ namespace StockService.Domain.DomainEvents
     {
         public decimal Amount {get;set;}
         public decimal Value {get;set;}
-        public string Symbol {get;set;}
+        public StockId StockId {get;set;}
         public TypeOperationInvestment TypeOperationInvestment {get;set;}
         public DateTime InvestmentDate {get;set;}
+        public TransactionId TransactionId {get;set;}
 
-
-
-
-        public TransactionPurchasedEvent(decimal amount,
+        public TransactionPurchasedEvent(TransactionId transactionId,
+                                        decimal amount,
                                          decimal value,
-                                         string symbol,
+                                         StockId stockId,
                                          DateTime investmentDate,
-                                         CorrelationIdGuid correlationIdGuid) :base(correlationIdGuid)
+                                         CorrelationId CorrelationId) :base(CorrelationId)
         {
             this.Amount = amount;
             this.Value = value;
-            this.Symbol = symbol;
+            this.StockId = stockId;
+            this.TransactionId = transactionId;
             this.InvestmentDate = investmentDate;
             this.TypeOperationInvestment = TypeOperationInvestment.Purchase;
         }

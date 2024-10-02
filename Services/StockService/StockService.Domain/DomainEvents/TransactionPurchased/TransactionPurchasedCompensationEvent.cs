@@ -6,7 +6,7 @@ namespace StockService.Domain.DomainEvents
 {
     public class TransactionPurchasedCompensationEvent : RollBackEvent
     {
-        public TransactionPurchasedCompensationEvent( CorrelationIdGuid correlationId):base(correlationId)
+        public TransactionPurchasedCompensationEvent( CorrelationId correlationId):base(correlationId)
         {
 
         }

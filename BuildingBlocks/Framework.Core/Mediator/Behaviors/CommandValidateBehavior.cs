@@ -41,6 +41,7 @@ namespace Framework.Core.Mediator
             catch (Exception ex)
             {
                 _domainNotification.AddNotification(ex);
+                response = request.GetCommandOutput();
             }
 
             response = await CheckNotifications(request, response);

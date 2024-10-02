@@ -6,7 +6,7 @@ namespace Framework.Core.DomainObjects
         /// <summary>
         /// The aggregate identifier
         /// </summary>
-        public Guid AggregateId { get; }
+        //public Guid AggregateId { get; }
 
          long GetVersion() ;
 
