@@ -3,6 +3,7 @@ using Framework.Core.Messages;
 using Framework.Core.DomainObjects;
 using Framework.Shared.IntegrationEvent.Enums;
 using StockService.Domain.DomainEvents;
+using StockService.Domain.Models.Entities.Ids;
 
 namespace StockService.Application.Commands.Purchase
 {
@@ -23,12 +24,12 @@ namespace StockService.Application.Commands.Purchase
         public PurchaseCommand(  decimal amount,
                                 decimal value,
                                 string symbol,
-                               DateTime InvestmentDate ):base(CorrelationIdGuid.Create())
+                               DateTime InvestmentDate ):base(CorrelationId.Create())
         {
             this.Amount = amount;
             this.Value = value;
             this.InvestmentDate = InvestmentDate;
-            this.Symbol = symbol;
+            this.Symbol = symbol.ToUpper();
 
             this.AddRollBackEvent(new TransactionPurchasedCompensationEvent(this.CorrelationId));
         }

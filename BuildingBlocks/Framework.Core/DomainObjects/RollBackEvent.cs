@@ -9,7 +9,7 @@ namespace Framework.Core.DomainObjects
 {
     public abstract class RollBackEvent : DomainEvent
     {
-        public RollBackEvent(CorrelationIdGuid correlationId):base(correlationId)
+        public RollBackEvent(CorrelationId correlationId):base(correlationId)
         {
 
         }

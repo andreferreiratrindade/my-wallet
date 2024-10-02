@@ -16,7 +16,7 @@ namespace Framework.Shared.IntegrationEvent.Integration
 
         public ActivityAcceptedCompensationIntegratedEvent(Guid activityId,
                                                            List<string> notifications,
-                                                           CorrelationIdGuid correlationId) :base(correlationId)
+                                                           CorrelationId correlationId) :base(correlationId)
         {
             ActivityId = activityId;
             this.Notifications = notifications;

@@ -42,6 +42,7 @@ namespace StockService.Api.Configuration
             builder.RegisterEventStored();
             builder.RegisterOpenTelemetry();
             builder.Services.AddMessageBus();
+            builder.Services.AddMemoryCache();
 
         }
 
@@ -83,6 +84,8 @@ namespace StockService.Api.Configuration
         public static void RegisterRepositories(this IServiceCollection services)
         {
             services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IStockRepository, StockRepository>();
+            services.AddScoped<IStockResultTransactionRepository, StockResultTransactionRepository>();
         }
 
         public static void RegisterCommands(this IServiceCollection services)

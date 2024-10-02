@@ -6,7 +6,7 @@ namespace Framework.Core.Notifications
     public class DomainNotification : IDomainNotification
     {
         private readonly List<NotificationMessage> _notifications;
-        private CorrelationIdGuid _correlationIdGuid;
+        private CorrelationId _CorrelationId;
 
         public DomainNotification()
         {
@@ -43,18 +43,18 @@ namespace Framework.Core.Notifications
             }
         }
 
-        public CorrelationIdGuid GetCorrelationId()
+        public CorrelationId GetCorrelationId()
         {
-            return _correlationIdGuid;
+            return _CorrelationId;
         }
 
         public ValidationResult GetValidationResult(){
             return new ValidationResult( _notifications.Select(x=> new ValidationFailure("",x.Value)).ToList());
         }
 
-        public void SetCorrelationId(CorrelationIdGuid correlationId)
+        public void SetCorrelationId(CorrelationId correlationId)
         {
-            _correlationIdGuid = correlationId;
+            _CorrelationId = correlationId;
         }
     }
 }

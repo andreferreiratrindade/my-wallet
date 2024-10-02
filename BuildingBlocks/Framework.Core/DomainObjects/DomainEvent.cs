@@ -11,20 +11,23 @@ namespace Framework.Core.DomainObjects
     public abstract class DomainEvent : EventSourcingNotification, IDomainEvent
     {
         public Guid EventId { get; private set; }
-        public Guid AggregateId { get; protected set; }
+       // public AggregateId AggregateId { get;  }
         public long AggregateVersion { get; set; }
         public DateTime TimeStamp { get; }
 
-        public CorrelationIdGuid CorrelationId { get; }
+        public CorrelationId CorrelationId { get; }
 
         private DomainEvent()
         {
             EventId = Guid.NewGuid();
             TimeStamp = DateTime.UtcNow;
         }
-        protected DomainEvent(CorrelationIdGuid CorrelationId):this(){
-            this.CorrelationId = CorrelationId;
+
+        protected DomainEvent(CorrelationId correlationId):this(){
+            this.CorrelationId = correlationId;
         }
+
+
 
         // protected DomainEvent(Guid aggregateId) : this()
         // {

@@ -15,6 +15,8 @@ namespace StockService.Infra
 
 
         public DbSet<Transaction> Transations { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<StockResultTransaction>  StockResultTransactions{ get; set; }
 
     }
 

@@ -1,17 +1,21 @@
 using Framework.Core.DomainObjects;
 using Framework.Shared.IntegrationEvent.Enums;
 using StockService.Domain.DomainEvents;
+using StockService.Domain.Models.Entities.Ids;
 
 
 namespace StockService.Domain.Models.Entities
 {
     public class Transaction : AggregateRoot, IAggregateRoot
     {
+        public TransactionId TransactionId {get;set;}
         public decimal Amount {get;set;}
         public decimal Value {get;set;}
-        public string Symbol {get;set;}
+        public StockId StockId {get;set;}
         public DateTime InvestmentDate {get;set;}
         public TypeOperationInvestment TypeOperationInvestment {get;set;}
+
+        public virtual Stock Stock {get;set;}
         protected Transaction()
         {
 
@@ -19,36 +23,37 @@ namespace StockService.Domain.Models.Entities
 
         public static Transaction Purchase(decimal amount,
                                     decimal value,
-                                    string symbol,
+                                    StockId stockId,
                                     DateTime investmentDate,
-                                    CorrelationIdGuid correlationId)
+                                    CorrelationId correlationId)
         {
 
-            var transaction = new Transaction(amount, value, symbol, investmentDate, correlationId);
+            var transaction = new Transaction(amount, value, stockId, investmentDate, correlationId);
             transaction.ExecutePurchase(correlationId);
             return transaction;
         }
 
-        protected void ExecutePurchase(CorrelationIdGuid correlationIdGuid){
-            var @event = new TransactionPurchasedEvent(this.Amount,
+        protected void ExecutePurchase(CorrelationId CorrelationId){
+            var @event = new TransactionPurchasedEvent(this.TransactionId,
+                                                        this.Amount,
                                                        this.Value,
-                                                       this.Symbol,
+                                                       this.StockId,
                                                        this.InvestmentDate,
-                                                       correlationIdGuid);
+                                                       CorrelationId);
             this.RaiseEvent(@event);
         }
 
         private Transaction( decimal amount,
                 decimal value,
-                string symbol,
+                StockId stockId,
                 DateTime investmentDate,
-                CorrelationIdGuid correlationId)
+                CorrelationId correlationId)
         {
 
-            var @event = new TransactionCreatedEvent(Guid.NewGuid(),
+            var @event = new TransactionCreatedEvent(new TransactionId(Guid.NewGuid()),
                                                     amount,
                                                     value,
-                                                    symbol,
+                                                    stockId,
                                                     investmentDate,
                                                     correlationId );
             this.RaiseEvent(@event);
@@ -66,10 +71,10 @@ namespace StockService.Domain.Models.Entities
 
         private void OnTransactionCreatedEvent(TransactionCreatedEvent @event)
         {
-            AggregateId = @event.AggregateId;
+            TransactionId = @event.TransactionId;
             Amount = @event.Amount;
             Value = @event.Value;
-            Symbol = @event.Symbol;
+            StockId = @event.StockId;
             InvestmentDate = @event.InvestmentDate;
         }
 
