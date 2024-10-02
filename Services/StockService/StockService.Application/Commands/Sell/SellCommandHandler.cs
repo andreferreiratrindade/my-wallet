@@ -8,16 +8,16 @@ using Activities.Domain.Rules;
 using MediatR;
 
 
-namespace StockService.Application.Commands.Purchase
+namespace StockService.Application.Commands.Sell
 {
-    public class PurchaseCommandHandler : CommandHandler<PurchaseCommand, PurchaseCommandOutput, PurchaseCommandValidation>
+    public class SellCommandHandler : CommandHandler<SellCommand, SellCommandOutput, SellCommandValidation>
 
     {
         private readonly ITransactionRepository _transactiontRepository;
         private readonly IStockResultTransactionRepository _stockResultTransactionRepository;
         private readonly IStockRepository _stockRepository;
 
-        public PurchaseCommandHandler(ITransactionRepository transactiontRepository,
+        public SellCommandHandler(ITransactionRepository transactiontRepository,
                                       IStockResultTransactionRepository stockResultTransactionRepository,
                                       IStockRepository stockRepository,
                                       IDomainNotification domainNotification,
@@ -29,14 +29,14 @@ namespace StockService.Application.Commands.Purchase
             _stockResultTransactionRepository = stockResultTransactionRepository;
         }
 
-        public override async Task<PurchaseCommandOutput> ExecutCommand(PurchaseCommand request, CancellationToken cancellationToken)
+        public override async Task<SellCommandOutput> ExecutCommand(SellCommand request, CancellationToken cancellationToken)
         {
             _domainNotification.AddNotification(await CheckValidations(request));
             if (_domainNotification.HasNotifications) return request.GetCommandOutput();
 
             var stock = await _stockRepository.GetBySymbol(request.Symbol);
 
-            var transaction = Transaction.Purchase(request.Amount,
+            var transaction = Transaction.Sell(request.Amount,
                                                    request.Value,
                                                    stock.StockId,
                                                    request.InvestmentDate,
@@ -48,7 +48,7 @@ namespace StockService.Application.Commands.Purchase
             var existsStockResultTransaction = stockResultTransaction != null;
 
             stockResultTransaction ??= StockResultTransaction.Create(stock.StockId,request.CorrelationId);
-            stockResultTransaction.Add(request.Amount, request.Value, request.CorrelationId);
+            stockResultTransaction.Decrease(request.Amount, request.Value, request.CorrelationId);
             if(!existsStockResultTransaction){
                 _stockResultTransactionRepository.Add(stockResultTransaction);
             }else{
@@ -57,7 +57,7 @@ namespace StockService.Application.Commands.Purchase
 
             await PersistData(_transactiontRepository.UnitOfWork);
 
-            return new PurchaseCommandOutput
+            return new SellCommandOutput
             {
                 TransactionId = transaction.TransactionId.Value,
                 Amount = transaction.Amount,
@@ -68,11 +68,13 @@ namespace StockService.Application.Commands.Purchase
 
 
         }
-        public async Task<List<NotificationMessage>> CheckValidations(PurchaseCommand request)
+        public  async  Task<List<NotificationMessage>> CheckValidations(SellCommand request)
         {
-            var lstNotifications = new List<NotificationMessage>();
 
-            lstNotifications.AddRange(await BusinessRuleValidation.Check(new StockExistsRule(request.Symbol, _stockRepository)));
+            List<NotificationMessage> lstNotifications = new();
+
+            lstNotifications.AddRange( await BusinessRuleValidation.Check(new StockExistsRule(request.Symbol, _stockRepository)));
+            lstNotifications.AddRange( await BusinessRuleValidation.Check(new HasStockAmountEnoughToSellRule(request.Symbol, request.Amount, _stockRepository, _stockResultTransactionRepository)));
             return lstNotifications;
         }
     }

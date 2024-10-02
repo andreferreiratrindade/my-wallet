@@ -21,6 +21,18 @@ namespace StockService.Domain.Models.Entities
 
         }
 
+           public static Transaction Sell(decimal amount,
+                                    decimal value,
+                                    StockId stockId,
+                                    DateTime investmentDate,
+                                    CorrelationId correlationId)
+        {
+
+            var transaction = new Transaction(amount, value, stockId, investmentDate, correlationId);
+            transaction.ExecuteSell(correlationId);
+            return transaction;
+        }
+
         public static Transaction Purchase(decimal amount,
                                     decimal value,
                                     StockId stockId,
@@ -35,6 +47,16 @@ namespace StockService.Domain.Models.Entities
 
         protected void ExecutePurchase(CorrelationId CorrelationId){
             var @event = new TransactionPurchasedEvent(this.TransactionId,
+                                                        this.Amount,
+                                                       this.Value,
+                                                       this.StockId,
+                                                       this.InvestmentDate,
+                                                       CorrelationId);
+            this.RaiseEvent(@event);
+        }
+
+          protected void ExecuteSell(CorrelationId CorrelationId){
+            var @event = new TransactionSoldEvent(this.TransactionId,
                                                         this.Amount,
                                                        this.Value,
                                                        this.StockId,
@@ -65,6 +87,7 @@ namespace StockService.Domain.Models.Entities
             {
                 case TransactionCreatedEvent x: OnTransactionCreatedEvent(x); break;
                 case TransactionPurchasedEvent x: OnTransactionPurchasedEvent(x); break;
+                case TransactionSoldEvent x: OnTransactionSoldEvent(x); break;
 
             }
         }
@@ -79,6 +102,11 @@ namespace StockService.Domain.Models.Entities
         }
 
         private void OnTransactionPurchasedEvent(TransactionPurchasedEvent @event)
+        {
+            this.TypeOperationInvestment = @event.TypeOperationInvestment;
+        }
+
+          private void OnTransactionSoldEvent(TransactionSoldEvent @event)
         {
             this.TypeOperationInvestment = @event.TypeOperationInvestment;
         }

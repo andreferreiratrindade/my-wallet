@@ -11,10 +11,10 @@ namespace Framework.Core.DomainObjects
     public static class BusinessRuleValidation
     {
 
-        public static List<NotificationMessage> Check(IBusinessRule rule)
+        public static async Task<List<NotificationMessage>> Check(IBusinessRule rule)
         {
             var lstNotifications = new List<NotificationMessage>();
-            if (rule.IsBroken())
+            if (await rule.IsBroken())
             {
                 rule.Message.ForEach(x => lstNotifications.Add(new NotificationMessage(string.Empty, x)));
             }

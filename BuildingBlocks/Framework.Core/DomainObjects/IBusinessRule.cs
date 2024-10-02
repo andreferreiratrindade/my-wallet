@@ -7,7 +7,7 @@ namespace Framework.Core.DomainObjects
 {
     public interface IBusinessRule
     {
-        bool IsBroken();
+        Task<bool> IsBroken();
 
         List<string> Message { get; }
     }

@@ -23,14 +23,14 @@ namespace Activities.Domain.Rules
         List<string> IBusinessRule.Message => MessageDetail;
 
 
-        public bool IsBroken()
+        public async Task<bool> IsBroken()
         {
-            var stock = _stockRepository.GetBySymbol(Symbol);
+            var stock = await _stockRepository.GetBySymbol(Symbol);
             if(stock == null){
-                MessageDetail.Add($"Stock not found");
+                MessageDetail.Add($"Stock '{Symbol}' not found");
             }
 
-            return MessageDetail.Any();
+            return MessageDetail.Count != 0;
         }
     }
 }

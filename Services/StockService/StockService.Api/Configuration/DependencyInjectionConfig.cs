@@ -12,6 +12,7 @@ using StockService.Domain.DomainEvents;
 using StockService.Infra;
 using StockService.Application.Events;
 using StockService.Application.Commands.Purchase;
+using StockService.Application.Commands.Sell;
 
 namespace StockService.Api.Configuration
 {
@@ -91,6 +92,7 @@ namespace StockService.Api.Configuration
         public static void RegisterCommands(this IServiceCollection services)
         {
             services.AddScoped<IRequestHandler<PurchaseCommand, PurchaseCommandOutput>, PurchaseCommandHandler>();
+            services.AddScoped<IRequestHandler<SellCommand, SellCommandOutput>, SellCommandHandler>();
         }
 
         public static void RegisterRules(this IServiceCollection services)
@@ -114,6 +116,7 @@ namespace StockService.Api.Configuration
         public static void RegisterEvents(this IServiceCollection services)
         {
             services.AddScoped<INotificationHandler<TransactionPurchasedEvent>, TransactionPurchasedEventHandler>();
+            services.AddScoped<INotificationHandler<TransactionSoldEvent>, TransactionSoldEventHandler>();
 
 
         }

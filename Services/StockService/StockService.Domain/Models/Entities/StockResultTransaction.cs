@@ -39,6 +39,17 @@ namespace StockService.Domain.Models.Entities
             this.RaiseEvent(@event);
         }
 
+        public void Decrease(decimal amount, decimal value, CorrelationId CorrelationId){
+            var @event = new StockResultTransactionDecreasedEvent(this.StockResultTransactionId,
+                                                    amount,
+                                                    value,
+                                                    this.StockId,
+                                                    CorrelationId);
+            this.RaiseEvent(@event);
+        }
+
+
+
         private StockResultTransaction(
                 StockId stockId,
                 CorrelationId correlationId)
@@ -56,6 +67,7 @@ namespace StockService.Domain.Models.Entities
             {
                 case StockResultTransactionCreatedEvent x: OnStockResultTransactionCreatedEvent(x); break;
                 case StockResultTransactionAddedEvent x: OnStockResultTransactionAddedEvent(x); break;
+                case StockResultTransactionDecreasedEvent x: OnStockResultTransactionDecreasedEvent(x); break;
             }
         }
 
@@ -70,5 +82,12 @@ namespace StockService.Domain.Models.Entities
            this.TotalAmount += @event.Amount;
            this.TotalValue += @event.Value * @event.Amount;
         }
+
+           private void OnStockResultTransactionDecreasedEvent(StockResultTransactionDecreasedEvent @event)
+        {
+           this.TotalAmount -= @event.Amount;
+           this.TotalValue -= @event.Value * @event.Amount;
+        }
+
     }
 }
