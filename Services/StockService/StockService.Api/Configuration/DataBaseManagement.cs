@@ -13,7 +13,7 @@ namespace StockService.Api.Configuration
                 var _db = scope.ServiceProvider.GetRequiredService<StockContext>();
 
                 _db.Database.Migrate();
-
+                _db.LoadStockList();
             }
         }
     }
