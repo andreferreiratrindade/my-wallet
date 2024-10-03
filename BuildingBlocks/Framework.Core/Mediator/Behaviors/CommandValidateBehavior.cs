@@ -1,3 +1,4 @@
+using Framework.Core.LogHelpers;
 using Framework.Core.Messages;
 using Framework.Core.Notifications;
 using MediatR;
@@ -61,13 +62,17 @@ namespace Framework.Core.Mediator
 
                 if (_domainNotification.HasNotificationWithException)
                 {
-                    _logger.LogError($"{LogHelper.ERROR_CRITIC}: {request.MessageType} : CorrelationId: {request.CorrelationId}: message: {notificationsJson}");
-
+                    _logger.CreateLog(new CriticErroLog(request.CorrelationId,
+                                                    request.MessageType,
+                                                    [LogConstants.ERROR_CRITIC],
+                                                    notificationsJson));
                 }
                 else
                 {
-                    _logger.CreateLog(new GenericLog(
-                                    request.CorrelationId, request.MessageType, [LogHelper.ERROR_INFORMATION], notificationsJson));
+                       _logger.CreateLog(new GenericLog(request.CorrelationId,
+                                                    request.MessageType,
+                                                    [LogConstants.ERROR_INFORMATION],
+                                                    notificationsJson));
                 }
 
                 var @event = request.GetRollBackEvent();

@@ -1,24 +1,14 @@
 
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
-using Serilog.Formatting.Compact;
-using Serilog.Sinks.Grafana.Loki;
-
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
-using Serilog;
 using Serilog.Sinks.OpenTelemetry;
-using System.Security.Authentication.ExtendedProtection;
-using Npgsql.Replication;
+
 namespace Framework.Core.OpenTelemetry
 {
     public static class OpenTelemetryConfig
