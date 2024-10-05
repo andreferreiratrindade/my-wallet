@@ -1,12 +1,13 @@
 
 using Framework.Core.DomainObjects;
 using Framework.Shared.IntegrationEvent.Enums;
+using StockService.Domain.Enums;
 using StockService.Domain.Models.Entities;
 using StockService.Domain.Models.Entities.Ids;
 
 namespace StockService.Domain.DomainEvents
 {
-    public class TransactionPurchasedEvent : DomainEvent
+    public class TransactionSoldRequestedEvent : DomainEvent
     {
         public decimal Amount {get;set;}
         public decimal Value {get;set;}
@@ -14,8 +15,10 @@ namespace StockService.Domain.DomainEvents
         public TypeOperationInvestment TypeOperationInvestment {get;set;}
         public DateTime InvestmentDate {get;set;}
         public TransactionStockId TransactionStockId {get;set;}
+        public StatusTransactionStock StatusTransactionStock { get; set; }
 
-        public TransactionPurchasedEvent(TransactionStockId transactionStockId,
+
+        public TransactionSoldRequestedEvent(TransactionStockId transactionStockId,
                                         decimal amount,
                                          decimal value,
                                          StockId stockId,
@@ -27,7 +30,16 @@ namespace StockService.Domain.DomainEvents
             this.StockId = stockId;
             this.TransactionStockId = transactionStockId;
             this.InvestmentDate = investmentDate;
-            this.TypeOperationInvestment = TypeOperationInvestment.Purchase;
+            this.TypeOperationInvestment = TypeOperationInvestment.Sale;
+            this.StatusTransactionStock = StatusTransactionStock.PENDING;
+
+        }
+    }
+     public class TransactionSoldCompensationEvent : RollBackEvent
+    {
+        public TransactionSoldCompensationEvent( CorrelationId correlationId):base(correlationId)
+        {
+
         }
     }
 }

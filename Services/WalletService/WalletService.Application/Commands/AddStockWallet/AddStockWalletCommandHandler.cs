@@ -32,7 +32,7 @@ public class AddStockWalletCommandHandler : CommandHandler<AddStockWalletCommand
 
         stockWallet.AddStock(request.TransactionStockId,request.Amount, request.CorrelationId);
 
-        if (existsStockWallet)
+        if (!existsStockWallet)
         {
             _stockWalletRepository.Add(stockWallet);
         }

@@ -7,17 +7,17 @@ using StockService.Domain.Models.Repositories;
 
 namespace StockService.Application.Events
 {
-    public class TransactionPurchasedEventHandler : INotificationHandler<TransactionPurchasedEvent>
+    public class TransactionPurchaseRequestedEventHandler : INotificationHandler<TransactionPurchaseRequestedEvent>
     {
         private readonly IMessageBus _messageBus;
         private readonly IStockRepository _stockRepository;
-        public TransactionPurchasedEventHandler(IMessageBus messageBus, IStockRepository stockRepository)
+        public TransactionPurchaseRequestedEventHandler(IMessageBus messageBus, IStockRepository stockRepository)
         {
             _messageBus = messageBus;
             _stockRepository =stockRepository;
         }
 
-        public async Task Handle(TransactionPurchasedEvent message, CancellationToken cancellationToken)
+        public async Task Handle(TransactionPurchaseRequestedEvent message, CancellationToken cancellationToken)
         {
             var symbolStock = await _stockRepository.GetById(message.StockId);
             await _messageBus.PublishAsync(

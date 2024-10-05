@@ -20,7 +20,7 @@ namespace WalletService.Application.Commands.Sell
         public DecreaseStockWalletCommand(Guid transactionStockId,
                                           decimal amount,
                                           string symbol,
-                                          CorrelationId correlactionId) :base(CorrelationId.Create())
+                                          CorrelationId correlactionId) :base(correlactionId)
         {
             this.Amount = amount;
             this.TransactionStockId = transactionStockId;

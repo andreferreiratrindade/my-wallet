@@ -7,7 +7,8 @@ namespace Framework.Core.DomainObjects
 {
     public abstract class AggregateRoot: IAggregateRoot
     {
-
+        public DateTime CreatedAt {get;set;}
+        public DateTime UpdatedAt {get;set;}
         readonly ICollection<IDomainEvent> _uncommittedEvents = new List<IDomainEvent>();
         private long _version  = -1;
 

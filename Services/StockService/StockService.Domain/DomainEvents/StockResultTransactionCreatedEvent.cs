@@ -9,13 +9,13 @@ namespace StockService.Domain.DomainEvents
     {
 
         public StockId StockId {get;set;}
-        public StockResultTransactionStockId StockResultTransactionStockId {get;set;}
+        public StockResultTransactionId StockResultTransactionId {get;set;}
 
-        public StockResultTransactionCreatedEvent( StockResultTransactionStockId stockResultTransactionStockId,
+        public StockResultTransactionCreatedEvent( StockResultTransactionId stockResultTransactionId,
                                          StockId stockId,
                                          CorrelationId CorrelationId) :base(CorrelationId)
         {
-            this.StockResultTransactionStockId = stockResultTransactionStockId;
+            this.StockResultTransactionId = stockResultTransactionId;
 
             this.StockId = stockId;
         }

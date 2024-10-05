@@ -4,8 +4,8 @@ using Framework.Core.Mediator;
 using StockService.Domain.Models.Repositories;
 using StockService.Domain.Models.Entities;
 using Framework.Core.DomainObjects;
-using Activities.Domain.Rules;
 using MediatR;
+using StockService.Domain.Rules;
 
 
 namespace StockService.Application.Commands.Purchase
@@ -13,20 +13,20 @@ namespace StockService.Application.Commands.Purchase
     public class PurchaseCommandHandler : CommandHandler<PurchaseCommand, PurchaseCommandOutput, PurchaseCommandValidation>
 
     {
-        private readonly ITransactionRepository _transactiontRepository;
-        private readonly IStockResultTransactionRepository _stockResultTransactionRepository;
+        private readonly ITransactionStockRepository _transactionStockRepository;
+        private readonly IStockResultTransactionStockRepository _stockResultTransactionStockRepository;
         private readonly IStockRepository _stockRepository;
 
-        public PurchaseCommandHandler(ITransactionRepository transactiontRepository,
-                                      IStockResultTransactionRepository stockResultTransactionRepository,
+        public PurchaseCommandHandler(ITransactionStockRepository transactiontRepository,
+                                      IStockResultTransactionStockRepository stockResultTransactionStockRepository,
                                       IStockRepository stockRepository,
                                       IDomainNotification domainNotification,
                                       IMediatorHandler mediatorHandler) : base(domainNotification, mediatorHandler)
 
         {
-            _transactiontRepository = transactiontRepository;
+            _transactionStockRepository = transactiontRepository;
             _stockRepository = stockRepository;
-            _stockResultTransactionRepository = stockResultTransactionRepository;
+            _stockResultTransactionStockRepository = stockResultTransactionStockRepository;
         }
 
         public override async Task<PurchaseCommandOutput> ExecutCommand(PurchaseCommand request, CancellationToken cancellationToken)
@@ -36,26 +36,26 @@ namespace StockService.Application.Commands.Purchase
 
             var stock = await _stockRepository.GetBySymbol(request.Symbol);
 
-            var transaction = Transaction.Purchase(request.Amount,
+            var transaction = TransactionStock.Purchase(request.Amount,
                                                    request.Value,
                                                    stock.StockId,
                                                    request.InvestmentDate,
                                                    request.CorrelationId);
 
-            _transactiontRepository.Add(transaction);
+            _transactionStockRepository.Add(transaction);
 
-            var stockResultTransaction = await _stockResultTransactionRepository.GetByStockId(stock.StockId);
+            var stockResultTransaction = await _stockResultTransactionStockRepository.GetByStockId(stock.StockId);
             var existsStockResultTransaction = stockResultTransaction != null;
 
             stockResultTransaction ??= StockResultTransaction.Create(stock.StockId,request.CorrelationId);
             stockResultTransaction.Add(request.Amount, request.Value, request.CorrelationId);
             if(!existsStockResultTransaction){
-                _stockResultTransactionRepository.Add(stockResultTransaction);
+                _stockResultTransactionStockRepository.Add(stockResultTransaction);
             }else{
-                _stockResultTransactionRepository.Update(stockResultTransaction);
+                _stockResultTransactionStockRepository.Update(stockResultTransaction);
             }
 
-            await PersistData(_transactiontRepository.UnitOfWork);
+            await PersistData(_transactionStockRepository.UnitOfWork);
 
             return new PurchaseCommandOutput
             {

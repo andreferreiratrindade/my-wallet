@@ -15,29 +15,38 @@ namespace StockService.Infra.Data.Mappings
         {
             builder.ToTable("StockResultTransaction");
 
-            var converter = new ValueConverter<StockResultTransactionStockId, Guid>(
+            var converter = new ValueConverter<StockResultTransactionId, Guid>(
                     id => id.Value,
-                    guidValue => new StockResultTransactionStockId(guidValue));
+                    guidValue => new StockResultTransactionId(guidValue));
 
-            builder.HasKey(e => e.StockResultTransactionStockId);
-            builder.Property(e => e.StockResultTransactionStockId)
+            builder.HasKey(e => e.StockResultTransactionId);
+            builder.Property(e => e.StockResultTransactionId)
                 .HasConversion(converter)
                 .ValueGeneratedOnAdd();
 
             var converterSockId = new ValueConverter<StockId, Guid>(
                     id => id.Value,
                     guidValue => new StockId(guidValue));
-            builder.Property(c=> c.StockId).HasConversion(converterSockId);
+            builder.Property(c => c.StockId).HasConversion(converterSockId);
 
-          //  builder.HasOne(c=> c.Stock).WithOne().HasForeignKey<Stock>(p=> p.StockId);
+            //  builder.HasOne(c=> c.Stock).WithOne().HasForeignKey<Stock>(p=> p.StockId);
 
             builder.Property(c => c.TotalAmount)
                         .IsRequired()
                         .HasColumnType("decimal(10,2)");
 
             builder.Property(c => c.TotalValue)
-         .IsRequired()
-         .HasColumnType("decimal(10,2)");
+                    .IsRequired()
+                    .HasColumnType("decimal(10,2)");
+
+            builder.Property(c=> c.CreatedAt)
+                    .IsRequired()
+                     .HasColumnType("datetime2");
+
+            builder.Property(c=> c.UpdatedAt)
+                    .IsRequired()
+                    .HasColumnType("datetime2");
+
 
         }
     }

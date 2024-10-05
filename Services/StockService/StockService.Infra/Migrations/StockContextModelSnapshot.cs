@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WalletService.Infra;
+using StockService.Infra;
 
 #nullable disable
 
-namespace WalletService.Infra.Migrations
+namespace StockService.Infra.Migrations
 {
-    [DbContext(typeof(WalletContext))]
-    partial class WalletContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(StockContext))]
+    partial class StockContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -194,9 +194,62 @@ namespace WalletService.Infra.Migrations
                     b.ToTable("OutboxState");
                 });
 
-            modelBuilder.Entity("WalletService.Domain.Models.Entities.StockWallet", b =>
+            modelBuilder.Entity("StockService.Domain.Models.Entities.Stock", b =>
                 {
-                    b.Property<Guid>("StockWalletId")
+                    b.Property<Guid>("StockId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("StockId");
+
+                    b.ToTable("Stocks", (string)null);
+                });
+
+            modelBuilder.Entity("StockService.Domain.Models.Entities.StockResultTransaction", b =>
+                {
+                    b.Property<Guid>("StockResultTransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("StockId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("StockResultTransactionId");
+
+                    b.HasIndex("StockId");
+
+                    b.ToTable("StockResultTransaction", (string)null);
+                });
+
+            modelBuilder.Entity("StockService.Domain.Models.Entities.TransactionStock", b =>
+                {
+                    b.Property<Guid>("TransactionStockId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -206,16 +259,49 @@ namespace WalletService.Infra.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Symbol")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
+                    b.Property<DateTime>("InvestmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StatusTransactionStock")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StockId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("TypeOperationInvestment")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StockWalletId");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(10,2)");
 
-                    b.ToTable("StockWallets", (string)null);
+                    b.HasKey("TransactionStockId");
+
+                    b.HasIndex("StockId");
+
+                    b.ToTable("TransactionStock", (string)null);
+                });
+
+            modelBuilder.Entity("StockService.Domain.Models.Entities.StockResultTransaction", b =>
+                {
+                    b.HasOne("StockService.Domain.Models.Entities.Stock", "Stock")
+                        .WithMany()
+                        .HasForeignKey("StockId")
+                        .IsRequired();
+
+                    b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("StockService.Domain.Models.Entities.TransactionStock", b =>
+                {
+                    b.HasOne("StockService.Domain.Models.Entities.Stock", "Stock")
+                        .WithMany()
+                        .HasForeignKey("StockId")
+                        .IsRequired();
+
+                    b.Navigation("Stock");
                 });
 #pragma warning restore 612, 618
         }

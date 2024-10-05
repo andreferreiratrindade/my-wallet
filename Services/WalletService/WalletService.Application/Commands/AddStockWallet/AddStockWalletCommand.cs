@@ -18,7 +18,7 @@ namespace WalletService.Application.Commands.Purchase
         [Required]
         public string Symbol {get;set;}
 
-        public AddStockWalletCommand(Guid transactionStockId, decimal amount, string symbol, CorrelationId correlationId):base(CorrelationId.Create())
+        public AddStockWalletCommand(Guid transactionStockId, decimal amount, string symbol, CorrelationId correlationId):base(correlationId)
         {
             this.Amount = amount;
             this.Symbol = symbol;

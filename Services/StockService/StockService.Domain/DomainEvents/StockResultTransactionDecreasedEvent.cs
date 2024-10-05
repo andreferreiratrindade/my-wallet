@@ -1,30 +1,27 @@
 
 using Framework.Core.DomainObjects;
+using Framework.Shared.IntegrationEvent.Enums;
 using StockService.Domain.Models.Entities.Ids;
 
 namespace StockService.Domain.DomainEvents
 {
-    public class TransactionCreatedEvent : DomainEvent
+    public class StockResultTransactionDecreasedEvent : DomainEvent
     {
         public decimal Amount {get;set;}
         public decimal Value {get;set;}
         public StockId StockId {get;set;}
-        public DateTime InvestmentDate {get;set;}
-        public TransactionStockId TransactionStockId {get;set;}
+        public StockResultTransactionId StockResultTransactionId { get; set; }
 
-        public TransactionCreatedEvent( TransactionStockId transactionStockId,
+        public StockResultTransactionDecreasedEvent(StockResultTransactionId stockResultTransactionId,
                                         decimal amount,
                                          decimal value,
                                          StockId stockId,
-                                         DateTime investmentDate,
                                          CorrelationId CorrelationId) :base(CorrelationId)
         {
-            this.TransactionStockId = transactionStockId;
+            this.StockResultTransactionId = stockResultTransactionId;
             this.Amount = amount;
             this.Value = value;
             this.StockId = stockId;
-
-            this.InvestmentDate =investmentDate;
         }
     }
 }

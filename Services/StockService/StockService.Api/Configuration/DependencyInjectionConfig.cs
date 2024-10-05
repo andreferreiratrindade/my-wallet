@@ -13,6 +13,7 @@ using StockService.Infra;
 using StockService.Application.Events;
 using StockService.Application.Commands.Purchase;
 using StockService.Application.Commands.Sell;
+using StockService.Application.IntegrationServices;
 
 namespace StockService.Api.Configuration
 {
@@ -67,7 +68,7 @@ namespace StockService.Api.Configuration
                 });
 
                 // config.AddConsumer<Activity_ActivityAcceptedIntegrationHandle>();
-                // config.AddConsumer<Activity_ActivityRejectedIntegrationHandle>();
+                 config.AddConsumer<Stock_StockWalletIntegrationHandle>();
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
                     cfg.Host(messageQueueConnection.Host, x =>
@@ -84,15 +85,16 @@ namespace StockService.Api.Configuration
         }
         public static void RegisterRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<ITransactionStockRepository, TransactionStockRepository>();
             services.AddScoped<IStockRepository, StockRepository>();
-            services.AddScoped<IStockResultTransactionRepository, StockResultTransactionRepository>();
+            services.AddScoped<IStockResultTransactionStockRepository, StockResultTransactionStockRepository>();
         }
 
         public static void RegisterCommands(this IServiceCollection services)
         {
             services.AddScoped<IRequestHandler<PurchaseCommand, PurchaseCommandOutput>, PurchaseCommandHandler>();
             services.AddScoped<IRequestHandler<SellCommand, SellCommandOutput>, SellCommandHandler>();
+            services.AddScoped<IRequestHandler<ConfirmCommand, ConfirmCommandOutput>, ConfirmCommandHandler>();
         }
 
         public static void RegisterRules(this IServiceCollection services)
@@ -115,8 +117,8 @@ namespace StockService.Api.Configuration
 
         public static void RegisterEvents(this IServiceCollection services)
         {
-            services.AddScoped<INotificationHandler<TransactionPurchasedEvent>, TransactionPurchasedEventHandler>();
-            services.AddScoped<INotificationHandler<TransactionSoldEvent>, TransactionSoldEventHandler>();
+            services.AddScoped<INotificationHandler<TransactionPurchaseRequestedEvent>, TransactionPurchaseRequestedEventHandler>();
+            services.AddScoped<INotificationHandler<TransactionSoldRequestedEvent>, TransactionSoldRequestedEventHandler>();
 
 
         }

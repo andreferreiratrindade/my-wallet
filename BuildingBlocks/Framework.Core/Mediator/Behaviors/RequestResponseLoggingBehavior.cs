@@ -19,8 +19,6 @@ namespace Framework.Core.Mediator
         }
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-
-
             _logger.CreateLog(new GenericLog(request.CorrelationId,
                                                     request.MessageType,
                                                     [LogConstants.SERVICE, LogConstants.REQUEST],

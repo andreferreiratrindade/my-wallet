@@ -11,11 +11,11 @@ using StockService.Domain.Models.Entities.Ids;
 
 namespace StockService.Infra.Data.Mappings
 {
-    public class TransactionMapping : IEntityTypeConfiguration<Transaction>
+    public class TransactionMapping : IEntityTypeConfiguration<TransactionStock>
     {
-        public void Configure(EntityTypeBuilder<Transaction> builder)
+        public void Configure(EntityTypeBuilder<TransactionStock> builder)
         {
-            builder.ToTable("Transactions");
+            builder.ToTable("TransactionStock");
 
             var converter = new ValueConverter<TransactionStockId, Guid>(
                     id => id.Value,
@@ -49,6 +49,14 @@ namespace StockService.Infra.Data.Mappings
             builder.Property(c => c.TypeOperationInvestment)
                 .IsRequired()
                 .HasConversion(new EnumToNumberConverter<TypeOperationInvestment, byte>());
+
+                            builder.Property(c=> c.CreatedAt)
+                    .IsRequired()
+                     .HasColumnType("datetime2");
+
+            builder.Property(c=> c.UpdatedAt)
+                    .IsRequired()
+                    .HasColumnType("datetime2");
         }
     }
 }

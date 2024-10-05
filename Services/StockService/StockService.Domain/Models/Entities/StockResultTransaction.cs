@@ -9,7 +9,7 @@ namespace StockService.Domain.Models.Entities
 {
     public class StockResultTransaction : AggregateRoot, IAggregateRoot
     {
-        public StockResultTransactionStockId  StockResultTransactionStockId {get;set;}
+        public StockResultTransactionId  StockResultTransactionId {get;set;}
         public decimal TotalAmount {get;set;}
         public decimal TotalValue {get;set;}
         public StockId StockId {get;set;}
@@ -31,7 +31,7 @@ namespace StockService.Domain.Models.Entities
         }
 
         public void Add(decimal amount, decimal value, CorrelationId CorrelationId){
-            var @event = new StockResultTransactionAddedEvent(this.StockResultTransactionStockId,
+            var @event = new StockResultTransactionAddedEvent(this.StockResultTransactionId,
                                                     amount,
                                                     value,
                                                     this.StockId,
@@ -40,7 +40,7 @@ namespace StockService.Domain.Models.Entities
         }
 
         public void Decrease(decimal amount, decimal value, CorrelationId CorrelationId){
-            var @event = new StockResultTransactionDecreasedEvent(this.StockResultTransactionStockId,
+            var @event = new StockResultTransactionDecreasedEvent(this.StockResultTransactionId,
                                                     amount,
                                                     value,
                                                     this.StockId,
@@ -55,7 +55,7 @@ namespace StockService.Domain.Models.Entities
                 CorrelationId correlationId)
         {
 
-            var @event = new StockResultTransactionCreatedEvent(new StockResultTransactionStockId(Guid.NewGuid()),
+            var @event = new StockResultTransactionCreatedEvent(new StockResultTransactionId(Guid.NewGuid()),
                                                     stockId,
                                                     correlationId );
             this.RaiseEvent(@event);
@@ -73,7 +73,7 @@ namespace StockService.Domain.Models.Entities
 
         private void OnStockResultTransactionCreatedEvent(StockResultTransactionCreatedEvent @event)
         {
-            StockResultTransactionStockId = @event.StockResultTransactionStockId;
+            StockResultTransactionId = @event.StockResultTransactionId;
             StockId = @event.StockId;
         }
 

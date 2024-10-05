@@ -13,6 +13,7 @@ using WalletService.Infra;
 using WalletService.Application.Events;
 using WalletService.Application.Commands.Purchase;
 using WalletService.Application.Commands.Sell;
+using WalletService.Application.IntegrationServices;
 
 namespace WalletService.Api.Configuration
 {
@@ -60,7 +61,8 @@ namespace WalletService.Api.Configuration
                 });
 
                 // config.AddConsumer<Activity_ActivityAcceptedIntegrationHandle>();
-                // config.AddConsumer<Activity_ActivityRejectedIntegrationHandle>();
+                 config.AddConsumer<Wallet_StockDecreasedIntegrationHandle>();
+                 config.AddConsumer<Wallet_StockPurchasedIntegrationHandle>();
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
                     cfg.Host(messageQueueConnection.Host, x =>

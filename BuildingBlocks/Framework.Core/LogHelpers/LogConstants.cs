@@ -9,4 +9,6 @@ public static class LogConstants{
 
     public static string REQUEST {get;} = "#Request";
     public static string RESPONSE {get;} = "#Response";
+
+    public static string RECEIVE_FROM_BROKER{get;} = "#ReceiveFromBroker";
 }

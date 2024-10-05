@@ -33,6 +33,14 @@ namespace WalletService.Infra.Data.Mappings
                          .IsRequired()
                          .HasColumnType("decimal(10,2)");
 
+            builder.Property(c=> c.CreatedAt)
+                    .IsRequired()
+                    .HasColumnType("datetime2");
+
+            builder.Property(c=> c.UpdatedAt)
+                    .IsRequired()
+                    .HasColumnType("datetime2");
+
         }
     }
 }

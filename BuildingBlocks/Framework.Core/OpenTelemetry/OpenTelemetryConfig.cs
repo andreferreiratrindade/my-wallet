@@ -13,27 +13,10 @@ namespace Framework.Core.OpenTelemetry
 {
     public static class OpenTelemetryConfig
     {
-
-        private static void CreateLog(string serviceName)
-        {
-            Log.Logger = new LoggerConfiguration()
-                                            .MinimumLevel.Information()
-                                            .Enrich.FromLogContext()
-                                            .WriteTo.OpenTelemetry(opts =>
-                                            {
-                                                opts.IncludedData = IncludedData.SpecRequiredResourceAttributes;
-                                                opts.ResourceAttributes = new Dictionary<string, object>
-                                                {
-                                                    ["app"] = "web",
-                                                    ["runtime"] = "dotnet",
-                                                    ["service.name"] = serviceName
-                                                };
-                                            }).CreateLogger();
-        }
         public static void RegisterOpenTelemetry(this WebApplicationBuilder builder)
         {
             var serviceName = builder.Configuration.GetSection("NameApp").Value;
-            // CreateLog(serviceName);
+
             builder.Host.UseSerilog((context, loggerConfiguration)=>{
                 loggerConfiguration.WriteTo.OpenTelemetry(opts =>
                                             {
@@ -68,7 +51,6 @@ namespace Framework.Core.OpenTelemetry
                         .AddHttpClientInstrumentation()
                         .AddEntityFrameworkCoreInstrumentation()
                         .AddRedisInstrumentation()
-
                         .AddNpgsql()
                     .AddConsoleExporter()
 

@@ -33,7 +33,7 @@ namespace WalletService.Application.Commands.Sell
 
         stockWallet.DecreaseStock(request.TransactionStockId,request.Amount, request.CorrelationId);
 
-        if (existsStockWallet)
+        if (!existsStockWallet)
         {
             _stockWalletRepository.Add(stockWallet);
         }

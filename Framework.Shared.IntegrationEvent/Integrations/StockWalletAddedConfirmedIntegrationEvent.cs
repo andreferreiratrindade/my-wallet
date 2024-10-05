@@ -15,8 +15,8 @@ namespace Framework.Shared.IntegrationEvent.Integration
         public string Symbol {get;set;}
         public decimal Amount {get;set;}
         public StockWalletAddedConfirmedIntegrationEvent(
-                                    Guid transactionStokId,
                                     Guid stockWalletId,
+                                    Guid transactionStokId,
                                     decimal amount,
                                     string symbol,
                                     CorrelationId correlationId):base(correlationId)

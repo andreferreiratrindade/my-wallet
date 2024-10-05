@@ -33,6 +33,14 @@ namespace StockService.Infra.Data.Mappings
                          .IsRequired()
                          .HasColumnType("varchar(255)");
 
+                                     builder.Property(c=> c.CreatedAt)
+                    .IsRequired()
+                     .HasColumnType("datetime2");
+
+            builder.Property(c=> c.UpdatedAt)
+                    .IsRequired()
+                    .HasColumnType("datetime2");
+
         }
     }
 }

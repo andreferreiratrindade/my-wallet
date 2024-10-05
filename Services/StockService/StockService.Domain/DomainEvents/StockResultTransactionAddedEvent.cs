@@ -5,20 +5,20 @@ using StockService.Domain.Models.Entities.Ids;
 
 namespace StockService.Domain.DomainEvents
 {
-    public class StockResultTransactionDecreasedEvent : DomainEvent
+    public class StockResultTransactionAddedEvent : DomainEvent
     {
         public decimal Amount {get;set;}
         public decimal Value {get;set;}
         public StockId StockId {get;set;}
-        public StockResultTransactionStockId StockResultTransactionStockId { get; set; }
+        public StockResultTransactionId StockResultTransactionId { get; set; }
 
-        public StockResultTransactionDecreasedEvent(StockResultTransactionStockId stockResultTransactionStockId,
+        public StockResultTransactionAddedEvent(StockResultTransactionId stockResultTransactionId,
                                         decimal amount,
                                          decimal value,
                                          StockId stockId,
                                          CorrelationId CorrelationId) :base(CorrelationId)
         {
-            this.StockResultTransactionStockId = stockResultTransactionStockId;
+            this.StockResultTransactionId = stockResultTransactionId;
             this.Amount = amount;
             this.Value = value;
             this.StockId = stockId;
