@@ -13,9 +13,9 @@ namespace StockService.Domain.DomainEvents
         public StockId StockId {get;set;}
         public TypeOperationInvestment TypeOperationInvestment {get;set;}
         public DateTime InvestmentDate {get;set;}
-        public TransactionId TransactionId {get;set;}
+        public TransactionStockId TransactionStockId {get;set;}
 
-        public TransactionSoldEvent(TransactionId transactionId,
+        public TransactionSoldEvent(TransactionStockId transactionStockId,
                                         decimal amount,
                                          decimal value,
                                          StockId stockId,
@@ -25,7 +25,7 @@ namespace StockService.Domain.DomainEvents
             this.Amount = amount;
             this.Value = value;
             this.StockId = stockId;
-            this.TransactionId = transactionId;
+            this.TransactionStockId = transactionStockId;
             this.InvestmentDate = investmentDate;
             this.TypeOperationInvestment = TypeOperationInvestment.Sale;
         }

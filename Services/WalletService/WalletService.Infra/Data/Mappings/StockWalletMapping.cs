@@ -9,18 +9,18 @@ using WalletService.Domain.Models.Entities.Ids;
 
 namespace WalletService.Infra.Data.Mappings
 {
-    public class WalletMapping : IEntityTypeConfiguration<Wallet>
+    public class StockWalletMapping : IEntityTypeConfiguration<StockWallet>
     {
-        public void Configure(EntityTypeBuilder<Wallet> builder)
+        public void Configure(EntityTypeBuilder<StockWallet> builder)
         {
-            builder.ToTable("Wallets");
+            builder.ToTable("StockWallets");
 
-            var converter = new ValueConverter<WalletId, Guid>(
+            var converter = new ValueConverter<StockWalletId, Guid>(
                     id => id.Value,
-                    guidValue => new WalletId(guidValue));
+                    guidValue => new StockWalletId(guidValue));
 
-            builder.HasKey(e => e.WalletId);
-            builder.Property(e => e.WalletId)
+            builder.HasKey(e => e.StockWalletId);
+            builder.Property(e => e.StockWalletId)
                 .HasConversion(converter)
                 .ValueGeneratedOnAdd();
 
@@ -29,9 +29,9 @@ namespace WalletService.Infra.Data.Mappings
                          .IsRequired()
                          .HasColumnType("varchar(50)");
 
-            builder.Property(c => c.Name)
+            builder.Property(c => c.Amount)
                          .IsRequired()
-                         .HasColumnType("varchar(255)");
+                         .HasColumnType("decimal(10,2)");
 
         }
     }

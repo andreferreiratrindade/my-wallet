@@ -17,12 +17,12 @@ namespace StockService.Infra.Data.Mappings
         {
             builder.ToTable("Transactions");
 
-            var converter = new ValueConverter<TransactionId, Guid>(
+            var converter = new ValueConverter<TransactionStockId, Guid>(
                     id => id.Value,
-                    guidValue => new TransactionId(guidValue));
+                    guidValue => new TransactionStockId(guidValue));
 
-            builder.HasKey(e => e.TransactionId);
-            builder.Property(e => e.TransactionId)
+            builder.HasKey(e => e.TransactionStockId);
+            builder.Property(e => e.TransactionStockId)
                 .HasConversion(converter)
                 .ValueGeneratedOnAdd();
 

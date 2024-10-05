@@ -53,7 +53,7 @@ namespace StockService.Application.Commands.Sell
 
             return new SellCommandOutput
             {
-                TransactionId = transaction.TransactionId.Value,
+                TransactionStockId = transaction.TransactionStockId.Value,
                 Amount = transaction.Amount,
                 Value = transaction.Value,
                 Symbol = request.Symbol,

@@ -31,7 +31,7 @@ namespace StockService.Api.Controllers
         public async Task<IActionResult> Purchase([FromBody] PurchaseCommand command)
         {
             var commandHandlerOutput = await _mediatorHandler.SendCommand<PurchaseCommand, PurchaseCommandOutput>(command);
-            return CustomResponseStatusCodeAccepted(commandHandlerOutput, $"api/transaction/v1/{commandHandlerOutput.TransactionId}");
+            return CustomResponseStatusCodeAccepted(commandHandlerOutput, $"api/transaction/v1/{commandHandlerOutput.TransactionStockId}");
         }
 
           /// <summary>
@@ -46,7 +46,7 @@ namespace StockService.Api.Controllers
         public async Task<IActionResult> Sell([FromBody] SellCommand command)
         {
             var commandHandlerOutput = await _mediatorHandler.SendCommand<SellCommand, SellCommandOutput>(command);
-            return CustomResponseStatusCodeAccepted(commandHandlerOutput, $"api/transaction/v1/{commandHandlerOutput.TransactionId}");
+            return CustomResponseStatusCodeAccepted(commandHandlerOutput, $"api/transaction/v1/{commandHandlerOutput.TransactionStockId}");
         }
     }
 }

@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StockService.Infra;
+using WalletService.Infra;
 
 #nullable disable
 
-namespace StockService.Infra.Migrations
+namespace WalletService.Infra.Migrations
 {
-    [DbContext(typeof(StockContext))]
-    partial class StockContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(WalletContext))]
+    partial class WalletContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -194,93 +194,22 @@ namespace StockService.Infra.Migrations
                     b.ToTable("OutboxState");
                 });
 
-            modelBuilder.Entity("StockService.Domain.Models.Entities.Stock", b =>
+            modelBuilder.Entity("WalletService.Domain.Models.Entities.StockWallet", b =>
                 {
-                    b.Property<Guid>("StockId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Symbol")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("StockId");
-
-                    b.ToTable("Stocks", (string)null);
-                });
-
-            modelBuilder.Entity("StockService.Domain.Models.Entities.StockResultTransaction", b =>
-                {
-                    b.Property<Guid>("StockResultTransactionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("StockId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("TotalValue")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("StockResultTransactionId");
-
-                    b.HasIndex("StockId");
-
-                    b.ToTable("StockResultTransaction", (string)null);
-                });
-
-            modelBuilder.Entity("StockService.Domain.Models.Entities.Transaction", b =>
-                {
-                    b.Property<Guid>("TransactionId")
+                    b.Property<Guid>("StockWalletId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<DateTime>("InvestmentDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
 
-                    b.Property<Guid>("StockId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasKey("StockWalletId");
 
-                    b.Property<byte>("TypeOperationInvestment")
-                        .HasColumnType("tinyint");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("TransactionId");
-
-                    b.HasIndex("StockId");
-
-                    b.ToTable("Transactions", (string)null);
-                });
-
-            modelBuilder.Entity("StockService.Domain.Models.Entities.StockResultTransaction", b =>
-                {
-                    b.HasOne("StockService.Domain.Models.Entities.Stock", "Stock")
-                        .WithMany()
-                        .HasForeignKey("StockId")
-                        .IsRequired();
-
-                    b.Navigation("Stock");
-                });
-
-            modelBuilder.Entity("StockService.Domain.Models.Entities.Transaction", b =>
-                {
-                    b.HasOne("StockService.Domain.Models.Entities.Stock", "Stock")
-                        .WithMany()
-                        .HasForeignKey("StockId")
-                        .IsRequired();
-
-                    b.Navigation("Stock");
+                    b.ToTable("StockWallets", (string)null);
                 });
 #pragma warning restore 612, 618
         }

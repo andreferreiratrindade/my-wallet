@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace StockService.Infra.Migrations
+namespace WalletService.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class Iniital : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -83,56 +83,16 @@ namespace StockService.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stocks",
+                name: "StockWallets",
                 columns: table => new
                 {
-                    StockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Symbol = table.Column<string>(type: "varchar(50)", nullable: false)
+                    StockWalletId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Symbol = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stocks", x => x.StockId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StockResultTransaction",
-                columns: table => new
-                {
-                    StockResultTransactionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    TotalValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    StockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StockResultTransaction", x => x.StockResultTransactionId);
-                    table.ForeignKey(
-                        name: "FK_StockResultTransaction_Stocks_StockId",
-                        column: x => x.StockId,
-                        principalTable: "Stocks",
-                        principalColumn: "StockId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Transactions",
-                columns: table => new
-                {
-                    TransactionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Value = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    StockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InvestmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TypeOperationInvestment = table.Column<byte>(type: "tinyint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transactions", x => x.TransactionId);
-                    table.ForeignKey(
-                        name: "FK_Transactions_Stocks_StockId",
-                        column: x => x.StockId,
-                        principalTable: "Stocks",
-                        principalColumn: "StockId");
+                    table.PrimaryKey("PK_StockWallets", x => x.StockWalletId);
                 });
 
             migrationBuilder.CreateIndex(
@@ -168,16 +128,6 @@ namespace StockService.Infra.Migrations
                 name: "IX_OutboxState_Created",
                 table: "OutboxState",
                 column: "Created");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StockResultTransaction_StockId",
-                table: "StockResultTransaction",
-                column: "StockId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_StockId",
-                table: "Transactions",
-                column: "StockId");
         }
 
         /// <inheritdoc />
@@ -193,13 +143,7 @@ namespace StockService.Infra.Migrations
                 name: "OutboxState");
 
             migrationBuilder.DropTable(
-                name: "StockResultTransaction");
-
-            migrationBuilder.DropTable(
-                name: "Transactions");
-
-            migrationBuilder.DropTable(
-                name: "Stocks");
+                name: "StockWallets");
         }
     }
 }

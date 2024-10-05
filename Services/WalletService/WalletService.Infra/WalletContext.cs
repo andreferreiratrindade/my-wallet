@@ -14,9 +14,7 @@ namespace WalletService.Infra
         }
 
 
-        public DbSet<Transaction> Transations { get; set; }
-        public DbSet<Wallet> Wallets { get; set; }
-        public DbSet<WalletResultTransaction>  WalletResultTransactions{ get; set; }
+        public DbSet<StockWallet> StockWallets { get; set; }
 
     }
 

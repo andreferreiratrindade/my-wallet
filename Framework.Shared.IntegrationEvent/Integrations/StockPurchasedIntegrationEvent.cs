@@ -16,11 +16,11 @@ namespace Framework.Shared.IntegrationEvent.Integration
         public string Symbol {get;set;}
         public DateTime InvestmentDate {get;set;}
         public TypeOperationInvestment TypeOperationInvestment {get;set;}
-        public Guid TransactionId {get;set;}
+        public Guid TransactionStockId {get;set;}
 
 
         public StockPurchasedIntegrationEvent(
-                                    Guid transacionId,
+                                    Guid transactionStockId,
                                     decimal amount,
                                     decimal value,
                                     string symbol,
@@ -33,8 +33,7 @@ namespace Framework.Shared.IntegrationEvent.Integration
             Symbol = symbol;
             InvestmentDate = investmentDate;
             TypeOperationInvestment = typeOperationInvestment;
-            TransactionId = transacionId;
+            TransactionStockId = transactionStockId;
         }
-
     }
 }

@@ -38,7 +38,7 @@ namespace StockService.Application.Commands.Purchase
     public class PurchaseCommandOutput : OutputCommand
     {
 
-        public Guid TransactionId { get; internal set; }
+        public Guid TransactionStockId { get; internal set; }
         public decimal Amount { get; internal set; }
         public decimal Value { get; internal set; }
         public string Symbol { get; internal set; }

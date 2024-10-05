@@ -21,7 +21,7 @@ namespace StockService.Application.Events
         {
             var symbolStock = await _stockRepository.GetById(message.StockId);
             await _messageBus.PublishAsync(
-                       new StockSoldIntegrationEvent(message.TransactionId.Value,
+                       new StockSoldIntegrationEvent(message.TransactionStockId.Value,
                                                      message.Amount ,
                                                       message.Value,
                                                       symbolStock.Symbol,

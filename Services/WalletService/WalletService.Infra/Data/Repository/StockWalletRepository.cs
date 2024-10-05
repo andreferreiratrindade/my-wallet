@@ -8,42 +8,45 @@ using WalletService.Domain.Models.Repositories;
 
 namespace WalletService.Infra.Data.Repository
 {
-    public class WalletRepository : IWalletRepository
+    public class StockWalletRepository : IStockWalletRepository
     {
         private readonly WalletContext _context;
-        private readonly IMemoryCache _memoryCache;
 
-        public WalletRepository(WalletContext context, IMemoryCache memoryCache)
+        public StockWalletRepository(WalletContext context)
         {
             _context = context;
-            _memoryCache = memoryCache;
         }
         public IUnitOfWork UnitOfWork => _context;
 
+       public void Add(StockWallet entity)
+        {
+            _context.StockWallets.Add(entity);
+        }
+
+        public void Update(StockWallet entity)
+        {
+            _context.StockWallets.Update(entity);
+
+        }
 
         public void Dispose()
         {
             _context.Dispose();
         }
 
-        public  Task<Wallet?> GetById(WalletId WalletId)
+        public  async Task<StockWallet> GetById(StockWalletId StockWalletId)
         {
-            return  _memoryCache.GetOrCreate(WalletId,  entry =>
-         {
-             return  _context.Wallets.FirstOrDefaultAsync(x => x.WalletId == WalletId);
-         });
+
+             return  await _context.StockWallets.FirstOrDefaultAsync(x => x.StockWalletId == StockWalletId);
+
         }
 
-        public  Task<Wallet> GetBySymbol(string symbol)
+        public  async Task<StockWallet> GetBySymbol(string symbol)
         {
-            return  _memoryCache.GetOrCreate(symbol,  entry =>
-        {
-            return  _context.Wallets.FirstOrDefaultAsync(x => x.Symbol == symbol);
-        });
+            return await  _context.StockWallets.FirstOrDefaultAsync(x => x.Symbol == symbol);
         }
 
         public DbConnection GetConnection() => _context.Database.GetDbConnection();
-
 
     }
 

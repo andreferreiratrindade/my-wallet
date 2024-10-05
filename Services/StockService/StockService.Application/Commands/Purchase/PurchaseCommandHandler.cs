@@ -59,7 +59,7 @@ namespace StockService.Application.Commands.Purchase
 
             return new PurchaseCommandOutput
             {
-                TransactionId = transaction.TransactionId.Value,
+                TransactionStockId = transaction.TransactionStockId.Value,
                 Amount = transaction.Amount,
                 Value = transaction.Value,
                 Symbol = request.Symbol,

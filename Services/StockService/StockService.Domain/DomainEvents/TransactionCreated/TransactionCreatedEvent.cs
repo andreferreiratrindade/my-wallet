@@ -10,16 +10,16 @@ namespace StockService.Domain.DomainEvents
         public decimal Value {get;set;}
         public StockId StockId {get;set;}
         public DateTime InvestmentDate {get;set;}
-        public TransactionId TransactionId {get;set;}
+        public TransactionStockId TransactionStockId {get;set;}
 
-        public TransactionCreatedEvent( TransactionId transactionId,
+        public TransactionCreatedEvent( TransactionStockId transactionStockId,
                                         decimal amount,
                                          decimal value,
                                          StockId stockId,
                                          DateTime investmentDate,
                                          CorrelationId CorrelationId) :base(CorrelationId)
         {
-            this.TransactionId = transactionId;
+            this.TransactionStockId = transactionStockId;
             this.Amount = amount;
             this.Value = value;
             this.StockId = stockId;

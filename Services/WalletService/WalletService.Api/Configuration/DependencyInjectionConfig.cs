@@ -26,14 +26,7 @@ namespace WalletService.Api.Configuration
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             ApiConfigurationWebApiCore.RegisterServices(builder.Services);
-            // builder.Services.AddGraphQLServer()
-            //     .AddQueryType<Query>()
-            //     .RegisterDbContext<WalletContext>()
-            //     .AddFiltering()
-            //     .AddSorting();
 
-            //.AddSubscriptionType<ActivityQuerySubscription>()
-            //.AddInMemorySubscriptions();
             builder.Services.RegisterRepositories();
             builder.Services.RegisterCommands();
             builder.Services.RegisterRules();
@@ -84,15 +77,13 @@ namespace WalletService.Api.Configuration
         }
         public static void RegisterRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<IWalletRepository, WalletRepository>();
-            services.AddScoped<IWalletResultTransactionRepository, WalletResultTransactionRepository>();
+            services.AddScoped<IStockWalletRepository, StockWalletRepository>();
         }
 
         public static void RegisterCommands(this IServiceCollection services)
         {
-            services.AddScoped<IRequestHandler<PurchaseCommand, PurchaseCommandOutput>, PurchaseCommandHandler>();
-            services.AddScoped<IRequestHandler<SellCommand, SellCommandOutput>, SellCommandHandler>();
+            services.AddScoped<IRequestHandler<AddStockWalletCommand, AddStockWalletCommandOutput>, AddStockWalletCommandHandler>();
+            services.AddScoped<IRequestHandler<DecreaseStockWalletCommand, DecreaseStockWalletCommandOutput>, DecreaseStockWalletCommandHandler>();
         }
 
         public static void RegisterRules(this IServiceCollection services)
@@ -115,10 +106,8 @@ namespace WalletService.Api.Configuration
 
         public static void RegisterEvents(this IServiceCollection services)
         {
-            services.AddScoped<INotificationHandler<TransactionPurchasedEvent>, TransactionPurchasedEventHandler>();
-            services.AddScoped<INotificationHandler<TransactionSoldEvent>, TransactionSoldEventHandler>();
-
-
+            services.AddScoped<INotificationHandler<StockWalletAddedEvent>, StockWalletAddedEventHandler>();
+            services.AddScoped<INotificationHandler<StockWalletDecreasedEvent>, StockWalletDecreasedEventHandler>();
         }
 
         public static void RegisterEventStored(this WebApplicationBuilder builder)

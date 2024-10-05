@@ -8,7 +8,7 @@ namespace StockService.Domain.Models.Entities
 {
     public class Transaction : AggregateRoot, IAggregateRoot
     {
-        public TransactionId TransactionId {get;set;}
+        public TransactionStockId TransactionStockId {get;set;}
         public decimal Amount {get;set;}
         public decimal Value {get;set;}
         public StockId StockId {get;set;}
@@ -46,7 +46,7 @@ namespace StockService.Domain.Models.Entities
         }
 
         protected void ExecutePurchase(CorrelationId CorrelationId){
-            var @event = new TransactionPurchasedEvent(this.TransactionId,
+            var @event = new TransactionPurchasedEvent(this.TransactionStockId,
                                                         this.Amount,
                                                        this.Value,
                                                        this.StockId,
@@ -56,7 +56,7 @@ namespace StockService.Domain.Models.Entities
         }
 
           protected void ExecuteSell(CorrelationId CorrelationId){
-            var @event = new TransactionSoldEvent(this.TransactionId,
+            var @event = new TransactionSoldEvent(this.TransactionStockId,
                                                         this.Amount,
                                                        this.Value,
                                                        this.StockId,
@@ -72,7 +72,7 @@ namespace StockService.Domain.Models.Entities
                 CorrelationId correlationId)
         {
 
-            var @event = new TransactionCreatedEvent(new TransactionId(Guid.NewGuid()),
+            var @event = new TransactionCreatedEvent(new TransactionStockId(Guid.NewGuid()),
                                                     amount,
                                                     value,
                                                     stockId,
@@ -94,7 +94,7 @@ namespace StockService.Domain.Models.Entities
 
         private void OnTransactionCreatedEvent(TransactionCreatedEvent @event)
         {
-            TransactionId = @event.TransactionId;
+            TransactionStockId = @event.TransactionStockId;
             Amount = @event.Amount;
             Value = @event.Value;
             StockId = @event.StockId;
