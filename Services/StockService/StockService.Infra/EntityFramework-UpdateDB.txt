@@ -2,4 +2,4 @@
 
  dotnet ef database update --startup-project ..\Activities.api
 
-  dotnet ef --project StockService.Infra --startup-project StockService.Api migrations add Iniital
+  dotnet ef --project StockService.Infra --startup-project StockService.Api migrations add AddCreateAndUpdateData

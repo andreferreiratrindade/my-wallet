@@ -4,7 +4,7 @@ using StockService.Domain.Models.Entities.Ids;
 
 namespace StockService.Domain.Models.Repositories
 {
-    public interface IStockResultTransactionRepository : IRepository<Transaction>
+    public interface IStockResultTransactionStockRepository : IRepository<StockResultTransaction>
     {
         void Update(StockResultTransaction stockResultTransaction);
         void Add(StockResultTransaction stockResultTransaction);

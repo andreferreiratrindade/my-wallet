@@ -4,7 +4,7 @@ using StockService.Domain.Models.Entities;
 using StockService.Domain.Models.Repositories;
 using System.Data;
 
-namespace Activities.Domain.Rules
+namespace StockService.Domain.Rules
 {
     public class StockExistsRule :IBusinessRule
     {

@@ -19,6 +19,7 @@ public static class LogExtension{
     }
 
     public static void CreateLog(this ILogger logger, CriticErroLog errorLog ){
+
             var json = JsonSerializer.Serialize(errorLog);
 
             logger.LogCritical(json);

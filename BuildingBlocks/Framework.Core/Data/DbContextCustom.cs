@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Framework.Core.Data;
-using Framework.Core.DomainObjects;
+﻿using Framework.Core.DomainObjects;
 using Framework.Core.Mediator;
-using Framework.Core.Messages;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -46,19 +40,7 @@ namespace Framework.Core.Data
 
         public async Task<bool> Commit()
         {
-            foreach (var entry in ChangeTracker.Entries()
-                .Where(entry => entry.Entity.GetType().GetProperty("DtaCreated") != null))
-            {
-                if (entry.State == EntityState.Added)
-                {
-                    entry.Property("DtaCreated").CurrentValue = DateTime.Now;
-                }
-
-                if (entry.State == EntityState.Modified)
-                {
-                    entry.Property("DtaCreated").IsModified = false;
-                }
-            }
+            AddCurrentDateTimeAtCreateAndUpdateDateTime();
 
             bool sucesso = false;
 
@@ -70,10 +52,29 @@ namespace Framework.Core.Data
 
                 //await _eventStored.SaveAsync(events, aggregate.Entity.AggregateId, "aggregateTemp");
                 await _mediatorHandler.PublishEvent(events);
-                sucesso = await base.SaveChangesAsync()>0;
+                sucesso = await base.SaveChangesAsync() > 0;
             }
 
             return sucesso;
+        }
+
+        private void AddCurrentDateTimeAtCreateAndUpdateDateTime()
+        {
+            foreach (var entry in ChangeTracker.Entries()
+                .Where(entry => entry.Entity.GetType().GetProperty("CreatedAt") != null))
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Property("CreatedAt").CurrentValue = DateTime.Now;
+                }
+
+                if (entry.State == EntityState.Modified)
+                {
+                    entry.Property("CreatedAt").IsModified = false;
+                }
+                entry.Property("UpdatedAt").CurrentValue = DateTime.Now;
+
+            }
         }
 
         private IEnumerable<IDomainEvent> GetEventsByContext()

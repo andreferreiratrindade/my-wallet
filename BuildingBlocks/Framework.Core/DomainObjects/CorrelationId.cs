@@ -1,10 +1,13 @@
 using MongoDB.Driver.Core.Operations;
+using Newtonsoft.Json;
 
 namespace Framework.Core.DomainObjects
 {
     public class CorrelationId{
         public Guid Value {get;}
-        private CorrelationId(Guid value){
+
+        [JsonConstructor]
+        public CorrelationId(Guid value){
             Value = value;
         }
         public static CorrelationId Create(){

@@ -4,7 +4,7 @@ using StockService.Domain.Models.Entities;
 using StockService.Domain.Models.Repositories;
 using System.Data;
 
-namespace Activities.Domain.Rules
+namespace StockService.Domain.Rules
 {
     public class HasStockAmountEnoughToSellRule :IBusinessRule
     {
@@ -12,14 +12,14 @@ namespace Activities.Domain.Rules
         private decimal Amount;
         private List<string> MessageDetail = new();
         private readonly IStockRepository _stockRepository;
-        private readonly IStockResultTransactionRepository _stockResultTransactioRepository;
+        private readonly IStockResultTransactionStockRepository _stockResultTransactioRepository;
 
 
         public HasStockAmountEnoughToSellRule(
             string symbol,
             decimal amount,
             IStockRepository stockRepository,
-            IStockResultTransactionRepository stockResultTransactioRepository)
+            IStockResultTransactionStockRepository stockResultTransactioRepository)
         {
             Symbol = symbol;
             Amount = amount;

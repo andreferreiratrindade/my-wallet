@@ -4,8 +4,8 @@ using Framework.Core.Mediator;
 using StockService.Domain.Models.Repositories;
 using StockService.Domain.Models.Entities;
 using Framework.Core.DomainObjects;
-using Activities.Domain.Rules;
 using MediatR;
+using StockService.Domain.Rules;
 
 
 namespace StockService.Application.Commands.Sell
@@ -13,20 +13,20 @@ namespace StockService.Application.Commands.Sell
     public class SellCommandHandler : CommandHandler<SellCommand, SellCommandOutput, SellCommandValidation>
 
     {
-        private readonly ITransactionRepository _transactiontRepository;
-        private readonly IStockResultTransactionRepository _stockResultTransactionRepository;
+        private readonly ITransactionStockRepository _transactionStockRepository;
+        private readonly IStockResultTransactionStockRepository _stockResultTransactionStockRepository;
         private readonly IStockRepository _stockRepository;
 
-        public SellCommandHandler(ITransactionRepository transactiontRepository,
-                                      IStockResultTransactionRepository stockResultTransactionRepository,
+        public SellCommandHandler(ITransactionStockRepository transactiontRepository,
+                                      IStockResultTransactionStockRepository stockResultTransactionStockRepository,
                                       IStockRepository stockRepository,
                                       IDomainNotification domainNotification,
                                       IMediatorHandler mediatorHandler) : base(domainNotification, mediatorHandler)
 
         {
-            _transactiontRepository = transactiontRepository;
+            _transactionStockRepository = transactiontRepository;
             _stockRepository = stockRepository;
-            _stockResultTransactionRepository = stockResultTransactionRepository;
+            _stockResultTransactionStockRepository = stockResultTransactionStockRepository;
         }
 
         public override async Task<SellCommandOutput> ExecutCommand(SellCommand request, CancellationToken cancellationToken)
@@ -36,24 +36,24 @@ namespace StockService.Application.Commands.Sell
 
             var stock = await _stockRepository.GetBySymbol(request.Symbol);
 
-            var transaction = Transaction.Sell(request.Amount,
+            var transaction = TransactionStock.Sell(request.Amount,
                                                    request.Value,
                                                    stock.StockId,
                                                    request.InvestmentDate,
                                                    request.CorrelationId);
 
-            _transactiontRepository.Add(transaction);
+            _transactionStockRepository.Add(transaction);
 
-            var stockResultTransaction = await _stockResultTransactionRepository.GetByStockId(stock.StockId);
+            var stockResultTransaction = await _stockResultTransactionStockRepository.GetByStockId(stock.StockId);
             stockResultTransaction.Decrease(request.Amount, request.Value, request.CorrelationId);
 
-            _stockResultTransactionRepository.Update(stockResultTransaction);
+            _stockResultTransactionStockRepository.Update(stockResultTransaction);
 
-            await PersistData(_transactiontRepository.UnitOfWork);
+            await PersistData(_transactionStockRepository.UnitOfWork);
 
             return new SellCommandOutput
             {
-                TransactionId = transaction.TransactionId.Value,
+                TransactionStockId = transaction.TransactionStockId.Value,
                 Amount = transaction.Amount,
                 Value = transaction.Value,
                 Symbol = request.Symbol,
@@ -68,7 +68,7 @@ namespace StockService.Application.Commands.Sell
             List<NotificationMessage> lstNotifications = new();
 
             lstNotifications.AddRange( await BusinessRuleValidation.Check(new StockExistsRule(request.Symbol, _stockRepository)));
-            lstNotifications.AddRange( await BusinessRuleValidation.Check(new HasStockAmountEnoughToSellRule(request.Symbol, request.Amount, _stockRepository, _stockResultTransactionRepository)));
+            lstNotifications.AddRange( await BusinessRuleValidation.Check(new HasStockAmountEnoughToSellRule(request.Symbol, request.Amount, _stockRepository, _stockResultTransactionStockRepository)));
             return lstNotifications;
         }
     }

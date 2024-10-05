@@ -200,6 +200,9 @@ namespace StockService.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -207,6 +210,9 @@ namespace StockService.Infra.Migrations
                     b.Property<string>("Symbol")
                         .IsRequired()
                         .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("StockId");
 
@@ -219,6 +225,9 @@ namespace StockService.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("StockId")
                         .HasColumnType("uniqueidentifier");
 
@@ -228,6 +237,9 @@ namespace StockService.Infra.Migrations
                     b.Property<decimal>("TotalValue")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("StockResultTransactionId");
 
                     b.HasIndex("StockId");
@@ -235,17 +247,23 @@ namespace StockService.Infra.Migrations
                     b.ToTable("StockResultTransaction", (string)null);
                 });
 
-            modelBuilder.Entity("StockService.Domain.Models.Entities.Transaction", b =>
+            modelBuilder.Entity("StockService.Domain.Models.Entities.TransactionStock", b =>
                 {
-                    b.Property<Guid>("TransactionId")
+                    b.Property<Guid>("TransactionStockId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("InvestmentDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("StatusTransactionStock")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("StockId")
                         .HasColumnType("uniqueidentifier");
@@ -253,14 +271,17 @@ namespace StockService.Infra.Migrations
                     b.Property<byte>("TypeOperationInvestment")
                         .HasColumnType("tinyint");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("Value")
                         .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("TransactionId");
+                    b.HasKey("TransactionStockId");
 
                     b.HasIndex("StockId");
 
-                    b.ToTable("Transactions", (string)null);
+                    b.ToTable("TransactionStock", (string)null);
                 });
 
             modelBuilder.Entity("StockService.Domain.Models.Entities.StockResultTransaction", b =>
@@ -273,7 +294,7 @@ namespace StockService.Infra.Migrations
                     b.Navigation("Stock");
                 });
 
-            modelBuilder.Entity("StockService.Domain.Models.Entities.Transaction", b =>
+            modelBuilder.Entity("StockService.Domain.Models.Entities.TransactionStock", b =>
                 {
                     b.HasOne("StockService.Domain.Models.Entities.Stock", "Stock")
                         .WithMany()

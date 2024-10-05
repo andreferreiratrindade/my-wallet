@@ -7,11 +7,11 @@ using StockService.Domain.Models.Repositories;
 
 namespace StockService.Infra.Data.Repository
 {
-    public class StockResultTransactionRepository : IStockResultTransactionRepository
+    public class StockResultTransactionStockRepository : IStockResultTransactionStockRepository
     {
         private readonly StockContext _context;
 
-        public StockResultTransactionRepository(StockContext context)
+        public StockResultTransactionStockRepository(StockContext context)
         {
             _context = context;
         }
@@ -40,12 +40,12 @@ namespace StockService.Infra.Data.Repository
             throw new NotImplementedException();
         }
 
-        public StockResultTransactionRepository? GetById(Guid entityId)
+        public StockResultTransactionStockRepository? GetById(Guid entityId)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<StockResultTransactionRepository> GetQueryable()
+        public IQueryable<StockResultTransactionStockRepository> GetQueryable()
         {
             throw new NotImplementedException();
         }
