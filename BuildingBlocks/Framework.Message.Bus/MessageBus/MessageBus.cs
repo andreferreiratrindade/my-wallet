@@ -1,5 +1,6 @@
 ﻿
 
+using Framework.Core.LogHelpers;
 using Framework.Core.Messages.Integration;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ namespace Framework.MessageBus
     public class MessageBus : IMessageBus
     {
         private readonly IPublishEndpoint _publishEndpoint;
-        private readonly ILogger _logger;
+        private readonly ILogger<MessageBus> _logger;
 
         public MessageBus(IPublishEndpoint publishEndpoint, ILogger<MessageBus> logger)
         {
@@ -20,14 +21,14 @@ namespace Framework.MessageBus
         }
         public void Dispose()
         {
-
+            
         }
 
         public Task PublishAsync<T>(T message, CancellationToken cancellationToken) where T : IntegrationEvent
         {
             _logger.CreateLog(new GenericLog(message.CorrelationId,
                                              message.GetType().Name,
-                                             [LogHelper.SEND_TO_BROKER],
+                                             [LogConstants.SEND_TO_BROKER],
                                              message));
 
             return _publishEndpoint.Publish(message,cancellationToken);

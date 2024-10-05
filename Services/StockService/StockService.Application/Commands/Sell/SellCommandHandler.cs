@@ -45,15 +45,9 @@ namespace StockService.Application.Commands.Sell
             _transactiontRepository.Add(transaction);
 
             var stockResultTransaction = await _stockResultTransactionRepository.GetByStockId(stock.StockId);
-            var existsStockResultTransaction = stockResultTransaction != null;
-
-            stockResultTransaction ??= StockResultTransaction.Create(stock.StockId,request.CorrelationId);
             stockResultTransaction.Decrease(request.Amount, request.Value, request.CorrelationId);
-            if(!existsStockResultTransaction){
-                _stockResultTransactionRepository.Add(stockResultTransaction);
-            }else{
-                _stockResultTransactionRepository.Update(stockResultTransaction);
-            }
+
+            _stockResultTransactionRepository.Update(stockResultTransaction);
 
             await PersistData(_transactiontRepository.UnitOfWork);
 

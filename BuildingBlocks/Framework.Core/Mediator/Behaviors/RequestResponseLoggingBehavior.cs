@@ -1,3 +1,4 @@
+using Framework.Core.LogHelpers;
 using Framework.Core.Messages;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -22,16 +23,16 @@ namespace Framework.Core.Mediator
 
             _logger.CreateLog(new GenericLog(request.CorrelationId,
                                                     request.MessageType,
-                                                    [LogHelper.SERVICE, LogHelper.REQUEST],
+                                                    [LogConstants.SERVICE, LogConstants.REQUEST],
                                                     request));
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             var response = await next();
 
             watch.Stop();
-            _logger.CreateResponseLog(new ResponseLog(request.CorrelationId,
+            _logger.CreateLog(new ResponseLog(request.CorrelationId,
                                                       request.MessageType,
-                                                      [LogHelper.SERVICE, LogHelper.RESPONSE],
+                                                      [LogConstants.SERVICE, LogConstants.RESPONSE],
                                                       response,
                                                       watch.ElapsedMilliseconds));
 

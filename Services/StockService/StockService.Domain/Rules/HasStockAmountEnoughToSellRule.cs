@@ -36,8 +36,9 @@ namespace Activities.Domain.Rules
             var stock = await _stockRepository.GetBySymbol(Symbol);
             if(stock != null){
                 var stockResultTransaction = await _stockResultTransactioRepository.GetByStockId(stock.StockId);
-                if(stockResultTransaction.TotalAmount - Amount < 0){
-                    MessageDetail.Add($"Stock has just {stockResultTransaction.TotalAmount} quantity and you want to sell {Amount} quantity");
+                if(stockResultTransaction == null || stockResultTransaction.TotalAmount - Amount < 0){
+                    var totalAmount = stockResultTransaction?.TotalAmount?? 0;
+                    MessageDetail.Add($"Stock has just {totalAmount} quantity and you want to sell {Amount} quantity");
                 }
             }
 
