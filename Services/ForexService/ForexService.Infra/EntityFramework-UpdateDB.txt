@@ -1,0 +1,5 @@
+ dotnet ef migrations add tempCreate --startup-project ..\Activities.api
+
+ dotnet ef database update --startup-project ..\Activities.api
+
+  dotnet ef --project ForexService.Infra --startup-project ForexService.Api migrations add AddCreateAndUpdateData
